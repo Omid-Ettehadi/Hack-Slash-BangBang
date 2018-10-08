@@ -16,6 +16,15 @@ V 1.0 :
 1. Chose a Character -> 2. Click to start ->
 3. Ready to shake -> 4. The result of Shake.
 
+V 2.0 :
+Simpler version, included no dynamic switching of Human and Zombies
+in the interface. The two versions are identical in how they run,
+but the graphics and sound effects are different.
+Version 2.0 allows the users to keep shaking the device to bring up
+the next random card,  whereas in the advanced version you have to 
+reload the page to start a new game.
+
+
 Resources:
 - https://p5js.org/
 
