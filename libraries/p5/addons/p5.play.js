@@ -1,4 +1,4 @@
-/*
+﻿/*
 p5.play
 by Paolo Pedercini/molleindustria, 2015
 http://molleindustria.org/
@@ -3373,9 +3373,9 @@ function Animation(pInst) {
   *
   * @property looping
   * @type {Boolean}
-  * @default true
+  * @default false
   */
-  this.looping = true;
+  this.looping = false;
 
   /**
   * True if frame changed during the last draw cycle
