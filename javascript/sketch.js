@@ -4,6 +4,8 @@ var x, y;
 var hButton, zButton, cButton, sButton;
 var buttonSize,buttonMargin;
 
+var rgn;
+
 var hasGameStarted;
 var isCharacterChosen;
 
@@ -23,12 +25,14 @@ function preload() {
         zTools [i] = loadImage("images/zTools/ztool" + i + ".png");
     }
 }
-
 function setup() {
 	// Initializing
 	cButton = 0; // cButton is not created yet
     sButton = 0; // sButton is not created yet
     isCharacterChosen = 0; // Character not chosen
+	hasGameStarted = 0; // Game has not started
+	
+	randomNumberGenerator();
 	
 	// Canvas
 	x = window.innerWidth;
@@ -58,9 +62,44 @@ function setup() {
     zButton.position((3*x/4)-75, y - buttonSize + buttonMargin);
 	zButton.mousePressed(zFunction);
 }
-
 function draw() {
 	// Do nothing
+}
+function deviceShaken() {
+    // If game has started
+    if (hasGameStarted == 1) {   
+		sButton.remove();
+		cButton.remove();
+        if (isCharacterChosen == 1 ){
+            if(rgn == 0) {
+				image(Tools[0],(x/2) - 155,((y - buttonSize)/2) - 250,309,500);
+            } else if(rgn == 1){
+                image(Tools[1],(x/2) - 155,((y - buttonSize)/2) - 250,309,500);
+            } else if(rgn == 2){
+                image(Tools[2],(x/2) - 155,((y - buttonSize)/2) - 250,309,500);
+            }
+        } else if (isCharacterChosen == 2){
+            if(rgn == 0) {
+                image(Tools[0],(x/2) - 155,((y - buttonSize)/2) - 250,309,500);
+            } else if(rgn == 1){
+                image(Tools[1],(x/2) - 155,((y - buttonSize)/2) - 250,309,500);
+            } else if(rgn == 2){
+                image(Tools[2],(x/2) - 155,((y - buttonSize)/2) - 250,309,500);
+            }
+        }
+    }
+}
+
+function randomNumberGenerator(){
+    // Assign number from randomGenerator
+    rgn = Math.round(random(0,300));
+    if ( rgn > 200 ) {
+        rgn = 2;
+    } else if ( rgn > 100) {
+        rgn = 1;
+    } else {
+        rgn = 0;
+    }
 }
 
 function gFuntion() {
@@ -68,8 +107,9 @@ function gFuntion() {
     sButton = createImg('images/shake.png');
     sButton.size(250, 150);
     sButton.position((x/2) - 125, ((y - buttonSize)/2) - 75);
+	
+	hasGameStarted = 1;
 }
-
 function hFunction() {
 	// If character is not chosen, assign human tools to the Tools variable
     if (isCharacterChosen == 0) {
@@ -85,7 +125,6 @@ function hFunction() {
         isCharacterChosen = 1;
     } 
 }
-
 function zFunction() {
 	// If character is not chosen, assign zombie tools to the Tools variable
     if (isCharacterChosen == 0){
