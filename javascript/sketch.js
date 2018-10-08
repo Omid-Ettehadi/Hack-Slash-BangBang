@@ -9,10 +9,15 @@ var rgn;
 var hasGameStarted;
 var isCharacterChosen;
 
+
 var hTools = [];
 var zTools = [];
 var Tools = [];
 
+var zAudio, hAudio;
+var hrAudio, hpAudio, hsAudio;
+var zrAudio, zpAudio, zsAudio;
+var audioPlay;
 
 function preload() {
 	// Preload all the tools
@@ -24,13 +29,27 @@ function preload() {
 	for (var i = 0; i < 3; i++){
         zTools [i] = loadImage("images/zTools/ztool" + i + ".png");
     }
+	
+	// Load all sound files
+    soundFormats('mp3', 'ogg', 'm4a');
+    zAudio = loadSound("audios/zombie.mp3");
+    hAudio = loadSound("audios/human.mp3");
+    hrAudio = loadSound("audios/hRock.mp3");
+    hpAudio = loadSound("audios/hPaper.mp3");
+    hsAudio = loadSound("audios/hScissor.mp3");
+    zrAudio = loadSound("audios/zRock.mp3");
+    zpAudio = loadSound("audios/zPaper.mp3");
+    zsAudio = loadSound("audios/zScissor.mp3"); 
 }
 function setup() {
+	getAudioContext().resume();
+    
 	// Initializing
 	cButton = 0; // cButton is not created yet
     sButton = 0; // sButton is not created yet
     isCharacterChosen = 0; // Character not chosen
 	hasGameStarted = 0; // Game has not started
+	audioPlay = 0; // No audio has been played
 	
 	randomNumberGenerator();
 	
@@ -115,6 +134,11 @@ function hFunction() {
     if (isCharacterChosen == 0) {
         Tools = hTools;
 		
+		// Play audio
+		if (hAudio.isPlaying() == 0) {
+			hAudio.play();
+		}
+		
 		// Create cButton
         cButton = createImg('images/cards/hCard1.png');
         cButton.size(309, 500);
@@ -130,6 +154,11 @@ function zFunction() {
     if (isCharacterChosen == 0){
         Tools = zTools;
 		
+		// Play audio
+		if (zAudio.isPlaying() == 0) {
+			zAudio.play();
+		}
+	
 		// Create cButton
         cButton = createImg('images/cards/hCard1.png');
         cButton.size(309, 500);
@@ -142,10 +171,22 @@ function zFunction() {
 }
 
 function windowResized() {
+    // Check if cButton is created, if so remove it
     if ( cButton != 0){
         cButton.remove();
     }
-    hButton.remove();
-    zButton.remove();
+    // Check if sButton is created, if so remove it
+    if ( sButton != 0){
+        sButton.remove();
+    }
+    // Check if hButton is created, if so remove it
+    if ( hButton != 0){
+        hButton.remove();
+    }
+    // Check if zButton is created, if so remove it
+    if ( zButton != 0){
+        zButton.remove();
+    }
+    // Run setup again to reset the application
     setup();
 }
