@@ -12,10 +12,14 @@ var isCharacterChosen;
 var zAudio, hAudio;
 var hrAudio, hpAudio, hsAudio;
 var zrAudio, zpAudio, zsAudio;
+var audioPlay, memory;
 
 var hpCardAnimation, hrCardAnimation, hsCardAnimation;
 var zpCardAnimation, zrCardAnimation, zsCardAnimation;
 var playAnimation;
+
+var t;
+
 
 function preload() {
 	// Preload all animationsthe
@@ -46,6 +50,9 @@ function setup() {
     isCharacterChosen = 0; // Character not chosen
 	hasGameStarted = 0; // Game has not started
 	playAnimation = 0; // No animation to be shown
+	audioPlay = 0; // Don't start the sound effect
+	memory = 0; // No audio has been played
+	t = 0; // has not be given a value
 	
 	randomNumberGenerator();
 	
@@ -70,74 +77,121 @@ function setup() {
     zButton.mousePressed(zFunction);
 }
 function draw() {
-	if ( playAnimation == 1){
-        fill(0);
-        rect(0,0,window.innerWidth,window.innerHeight-150);
-        animation(hrCardAnimation,500,520);
+	// Call timer
+    timer();
+    if ( playAnimation == 1){
+        background(10);
+        animation(hrCardAnimation,(x/2),(y/2));
+		// Only play audio after timer is passed
+        if (audioPlay == 1 ){
+			// Make sure audio is not already playing
+			// Make sure the audio isonly played once
+            if (hrAudio.isPlaying() == 0 && memory == 0) {
+                hrAudio.play();
+                memory = 1;
+            }
+        }
     } else if ( playAnimation == 2){
-        fill(0);
-        rect(0,0,window.innerWidth,window.innerHeight-150);
-        animation(hpCardAnimation,500,520);
+        background(10);
+        animation(hpCardAnimation,(x/2),(y/2));
+		// Only play audio after timer is passed
+        if (audioPlay == 1 ){
+			// Make sure audio is not already playing
+			// Make sure the audio isonly played once
+            if (hpAudio.isPlaying() == 0 && memory == 0) {
+                hpAudio.play();
+                memory = 1;
+            }  
+        }
     } else if ( playAnimation == 3){
-        fill(0);
-        rect(0,0,window.innerWidth,window.innerHeight-150);
-        animation(hsCardAnimation,500,520);
+        background(10);
+        animation(hsCardAnimation,(x/2),(y/2));
+		// Only play audio after timer is passed
+        if (audioPlay == 1 ){
+			// Make sure audio is not already playing
+			// Make sure the audio isonly played once
+            if (hsAudio.isPlaying() == 0 && memory == 0) {
+                hsAudio.play();
+                memory = 1;
+            }
+        }  
     } else if ( playAnimation == 4){
-        fill(0);
-        rect(0,0,window.innerWidth,window.innerHeight-150);
-        animation(zrCardAnimation,500,520);        
+        background(10);
+        animation(zrCardAnimation,(x/2),(y/2));
+		// Only play audio after timer is passed
+        if (audioPlay == 1 ){
+			// Make sure audio is not already playing
+			// Make sure the audio isonly played once
+            if (zrAudio.isPlaying() == 0 && memory == 0) {
+                zrAudio.play();
+                memory = 1;
+            }
+        }
     } else if ( playAnimation == 5){
-        fill(0);
-        rect(0,0,window.innerWidth,window.innerHeight-150);
-        animation(zpCardAnimation,500,520);        
+        background(10);
+        animation(zpCardAnimation,(x/2),(y/2));
+		// Only play audio after timer is passed
+        if (audioPlay == 1 ){
+			// Make sure audio is not already playing
+			// Make sure the audio isonly played once
+            if (zpAudio.isPlaying() == 0 && memory == 0) {
+                zpAudio.play();
+                memory = 1;
+            }
+        }
     } else if ( playAnimation == 6){
-        fill(0);
-        rect(0,0,window.innerWidth,window.innerHeight-150);
-        animation(zsCardAnimation,500,520);        
+        background(10);
+        animation(zsCardAnimation,(x/2),(y/2));
+		// Only play audio after timer is passed
+        if (audioPlay == 1 ){
+			// Make sure audio is not already playing
+			// Make sure the audio isonly played once
+            if (zsAudio.isPlaying() == 0 && memory == 0) {
+                zsAudio.play();
+                memory = 1;
+            }
+        } 
     }
 }
 function deviceShaken() {
     // If game has started
-    if (hasGameStarted == 1) {   
-		sButton.remove();
-		cButton.remove();
-        if (isCharacterChosen == 1 ){
+    if (hasGameStarted == 1) {
+		// remove previous buttons
+        sButton.remove();
+        cButton.remove();
+		sButton = 0;
+        cButton = 0;
+        
+		// Is character human
+        if (isCharacterChosen == 1){
             if(rgn == 0) {
                 playAnimation = 1;
-                
+                t = second();
             } else if(rgn == 1){
                 playAnimation = 2;
-                if (hpAudio.isPlaying() == 0) {
-                    hpAudio.play();
-                }
+                t = second();
             } else if(rgn == 2){
                 playAnimation = 3;
-                if (hsAudio.isPlaying() == 0) {
-                    hsAudio.play();
-                }
+                t = second();
             }
-        } else if (isCharacterChosen == 2){
+        }
+		// Is character zombie		
+		else if (isCharacterChosen == 2){
             if(rgn == 0) {
                 playAnimation = 4;
-                if (zrAudio.isPlaying() == 0) {
-                    zrAudio.play();
-                } 
+                t = second();
             } else if(rgn == 1){
                 playAnimation = 5;
-                if (zpAudio.isPlaying() == 0) {
-                    zpAudio.play();
-                }
+                t = second();
             } else if(rgn == 2){
                 playAnimation = 6;
-                if (zsAudio.isPlaying() == 0) {
-                    zsAudio.play();
-                }
+                t = second();
             }
         }
     }
 }
 
-function randomNumberGenerator(){
+function randomNumberGenerator() {
     // Assign number from randomGenerator
     rgn = Math.round(random(0,300));
     if ( rgn > 200 ) {
@@ -148,16 +202,30 @@ function randomNumberGenerator(){
         rgn = 0;
     }
 }
+function timer() {
+    var tt = 1;
+    if (t != 0) {
+        if (second() - t > tt || t - second() > (59 - tt) ){
+            audioPlay = 1;
+        }
+    }
+}
 
 function gFuntion() {
 	// Create shake button
     sButton = createImg('images/shake.png');
-    sButton.size(250, 150);
-    sButton.position((x/2) - 125, ((y - buttonSize)/2) - 75);
+    sButton.size(500, 300);
+    sButton.position((x/2) - 250, ((y/2) - 150));
 	
 	hasGameStarted = 1;
 }
 function hFunction() {
+	// Remove previous buttons
+	hButton.remove();
+    zButton.remove();
+	hButton = 0;
+    zButton = 0;
+	
 	// If character is not chosen, assign human tools to the Tools variable
     if (isCharacterChosen == 0) {		
 		// Play audio
@@ -167,15 +235,21 @@ function hFunction() {
 		
 		// Create cButton
         cButton = createImg('images/cards/hCard1.png');
-        cButton.size(309, 500);
-        cButton.position((x/2) - 155, ((y - buttonSize)/2) - 250);
-        cButton.mousePressed(gFuntion);
+        cButton.size(618, 1000);
+		cButton.position((x/2) - 309, ((y/2) - 500));
+		cButton.mousePressed(gFuntion);
         
 		// Set character as chosen (human)
         isCharacterChosen = 1;
     } 
 }
 function zFunction() {
+	// Remove previous buttons
+	hButton.remove();
+    zButton.remove();
+	hButton = 0;
+    zButton = 0;
+	
 	// If character is not chosen, assign zombie tools to the Tools variable
     if (isCharacterChosen == 0){
 		// Play audio
@@ -185,9 +259,9 @@ function zFunction() {
 	
 		// Create cButton
         cButton = createImg('images/cards/hCard1.png');
-        cButton.size(309, 500);
-        cButton.position((x/2) - 155, ((y - buttonSize)/2) - 250);
-        cButton.mousePressed(gFuntion);
+        cButton.size(618, 1000);
+		cButton.position((x/2) - 309, ((y/2) - 500));
+		cButton.mousePressed(gFuntion);
         
 		// Set character as chosen (zombie)
         isCharacterChosen = 2;
