@@ -55,24 +55,18 @@ function setup() {
 	canvas = createCanvas(x, y);
     background(10);
     
-    // Button's bar
-    buttonSize = 150;
-    buttonMargin = 5;
-    
-    rect(0, y - buttonSize, x, buttonSize);
-    strokeWeight(4); // Line thickness
-    line(0, y - buttonSize, x,  y - buttonSize); // Top line
-    line(x/2, y - buttonSize, x/2, y); // Center line
-        
     // Buttons
-    hButton = createImg('images/icons/human.png');
-    hButton.size(buttonSize - 10, buttonSize - 10);
-    hButton.position((x/4)-75, y - buttonSize + buttonMargin);
+    var bWidth, bHeight; // adjustable size for picture's width and height
+    bWidth = (x/3);
+    bHeight = (x/3)*1.25;
+    hButton = createImg('images/cards/hCard0.png');
+    hButton.size( bWidth , bHeight);
+    hButton.position((x/2)-(bWidth+25), (y/2)-(bHeight/2));
     hButton.mousePressed(hFunction);
         
-    zButton = createImg('images/icons/zombie.png');
-    zButton.size(buttonSize - 20, buttonSize - 20);
-    zButton.position((3*x/4)-75, y - buttonSize + buttonMargin);
+    zButton = createImg('images/cards/zCard0.png');
+    zButton.size( bWidth , bHeight);
+    zButton.position((x/2)+25, (y/2)-(bHeight/2));
     zButton.mousePressed(zFunction);
 }
 function draw() {
